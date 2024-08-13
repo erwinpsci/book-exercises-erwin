@@ -19,7 +19,7 @@ makes_manu <- select(vehicles, make)
 
 # Use the `unique()` function to determine how many different car manufacturers
 # are represented by the data set
-unique(makes_manu)
+length(unique(vehicles$make))
 
 # Filter the data set for vehicles manufactured in 1997
 makes_manu_1997 <- filter(vehicles, year == 1997)
@@ -40,13 +40,14 @@ cars_hwy_1997 <-mutate(
 # Filter the whole vehicles data set for 2-Wheel Drive vehicles that get more
 # than 20 miles/gallon in the city. 
 # Save this new data frame in a variable.
-makes_2_wheels_20 <- filter(vehicles, cty > 20) %>% 
-  select(make, cty)
+makes_2_wheels_20 <- vehicles %>% 
+  filter(drive == "2-Wheel Drive") %>% 
+  filter(cty > 20)
 
 # Of the above vehicles, what is the vehicle ID of the vehicle with the worst 
 # hwy mpg?
 # Hint: filter for the worst vehicle, then select its ID.
-worst_hwy_mpg <- vehicles %>% 
+worst_hwy_mpg <- makes_2_wheels_20 %>% 
   filter(hwy == min(hwy)) %>% 
   select(id, hwy)
 
@@ -54,14 +55,14 @@ worst_hwy_mpg <- vehicles %>%
 # and returns the vehicle model that gets the most hwy miles/gallon of vehicles 
 # of that make in that year.
 # You'll need to filter more (and do some selecting)!
-find_best_model <- function(year, make){
+find_best_model <- function(make_choice, year_choice){
   filter_vehicles <- vehicles %>% 
-    filter(year == year, make == make) %>% 
+    filter(make == make_choice, year == year_choice) %>% 
     arrange(desc(hwy)) %>% 
     slice(1) %>% 
     pull(model)
 }
 
 # What was the most efficient Honda model of 1995?
-most_efficient_honda_1995 <- find_best_model(1995, "Honda")
+most_efficient_honda_1995 <- find_best_model("Honda", 1995)
 print(most_efficient_honda_1995)
