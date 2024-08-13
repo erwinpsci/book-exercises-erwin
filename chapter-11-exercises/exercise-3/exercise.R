@@ -29,3 +29,16 @@ best_acura_2015
 
 # Write 3 functions, one for each approach.  Then,
 # Test how long it takes to perform each one 1000 times
+
+
+# best Honda model to save fuel average
+best_average <-  function(hwy, cty){
+  result <- (hwy + cty)/2
+  return(result)
+}
+
+best_honda <- vehicles %>% 
+  filter(make == "Honda") %>% 
+  mutate(best_average = best_average(hwy, cty)) %>% 
+  filter(best_average == max(best_average)) %>% 
+  select(model, year, best_average)
