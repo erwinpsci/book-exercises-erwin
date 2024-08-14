@@ -65,3 +65,4 @@ better_shooters <- function(Team1, Team2){
 
 # Call the function on two teams to compare them (remember the `*` if needed)
 better_shooters("Golden State Warriors*", "Atlanta Hawks*")
+
