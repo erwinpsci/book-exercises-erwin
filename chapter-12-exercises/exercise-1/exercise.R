@@ -10,7 +10,7 @@ library(ggplot2)
 
 # Load the `data/avocado.csv` file into a variable `avocados`
 # Make sure strings are *not* read in as factors
-read.csv("avocado.csv", stringsAsFactors = FALSE)
+avocado <- read.csv("avocado.csv", stringsAsFactors = FALSE)
 
 # To tell R to treat the `Date` column as a date (not just a string)
 # Redefine that column as a date using the `as.Date()` function
@@ -22,14 +22,21 @@ avocado <- avocado %>%
 # `X4046` to `small_haas`
 # `X4225` to `large_haas`
 # `X4770` to `xlarge_haas`
-
+avocado <- avocado %>% 
+  rename(small_haas = X4046,
+         large_haas = X4225,
+         xlarge_haas = X4770)
 
 # The data only has sales for haas avocados. Create a new column `other_avos`
 # that is the Total.Volume minus all haas avocados (small, large, xlarge)
+avocado <- avocado %>% 
+  mutate(other_avos = Total.Volume - (small_haas + large_haas + xlarge_haas))
 
 
 # To perform analysis by avocado size, create a dataframe `by_size` that has
 # only `Date`, `other_avos`, `small_haas`, `large_haas`, `xlarge_haas`
+by_size <- avocado %>% 
+  select(Date, other_avos, small_haas, large_haas, xlarge_haas)
 
 
 # In order to visualize this data, it needs to be reshaped. The four columns
@@ -39,10 +46,19 @@ avocado <- avocado %>%
 # `volume`. Create a new dataframe `size_gathered` by passing the `by_size` 
 # data frame to the `gather()` function. `size_gathered` will only have 3 
 # columns: `Date`, `size`, and `volume`.
+size_gathered <- by_size %>% 
+  gather(
+    key = size,
+    value = volume,
+    -Date
+  )
 
 
 # Using `size_gathered`, compute the average sales volume of each size 
 # (hint, first `group_by` size, then compute using `summarize`)
+average_sales <- size_gathered %>% 
+  group_by(size) %>% 
+  summarise(mean(volume))
 
 
 # This shape also facilitates the visualization of sales over time
@@ -55,12 +71,23 @@ ggplot(size_gathered) +
 # Create a new data frame `by_type` by grouping the `avocados` dataframe by
 # `Date` and `type`, and calculating the sum of the `Total.Volume` for that type
 # in that week (resulting in a data frame with 2 rows per week).
+unique(avocado$type) # check what types are under the "type" vector
 
-
+by_type <- avocado %>% 
+  group_by(Date, type) %>% # Group by Date and Type
+  summarize(Total.Volume = sum(Total.Volume, na.rm = TRUE))
+  
+  
 # To make a (visual) comparison of conventional versus organic sales, you 
 # need to **spread** out the `type` column into two different columns. Create a 
 # new data frame `by_type_wide` by passing the `by_type` data frame to 
 # the `spread()` function!
+
+by_type_wide <- by_type %>% 
+  spread(
+    key = type,
+    value = Total.Volume
+  )
 
 
 # Now you can create a scatterplot comparing conventional to organic sales!
