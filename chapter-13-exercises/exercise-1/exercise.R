@@ -91,3 +91,4 @@ artist_genre_popularity <- track_tbl %>%
   arrange(-count) # Arrange in descending order by count
 print(artist_genre_popularity)
 # Remember to disconnect from the database once you are done with it!
+dbDisconnect(db_connection)
