@@ -259,6 +259,10 @@ base_plot <- qmplot(
   darken = 0.5, # darken the map by 50%
   legend = "topleft" # no legend is needed
 )
+
+# the use of Stadia Maps is embedded in the latest version of the ggmap package.
+# Starting with ggmap v3.0.0, the package dropped support for Google’s map services (due to API policy changes) and began using Stadia Maps as its primary tile provider for qmplot() and get_map().
+
 # add the location of evictions to the map
 base_plot +
   geom_point(
