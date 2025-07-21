@@ -104,7 +104,6 @@ p + coord_polar() +
 # coxcomb chart is a variation of a pie chart that shows the size of each slice in relation to the total, but also adds a radial component to show the distribution of the data
 
 ## Facets
-
 # Take the scatter plot of price by carat data (colored by clarity) and add 
 # _facets_ based on the diamond's `color`
 ggplot(diamonds_sample, aes(x = carat, y = price, color = clarity)) +
