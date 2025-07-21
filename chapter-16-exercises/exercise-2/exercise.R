@@ -110,6 +110,7 @@ p + coord_polar() +
 ggplot(diamonds_sample, aes(x = carat, y = price, color = clarity)) +
   geom_point() +
   facet_wrap(~ color)
+ggsave("my-plot-2.png", plot = last_plot(), width = 8, height = 6, dpi = 300)
 # facet_wrap() will create a separate plot for each level of the color variable, allowing you to see the distribution of the data for each color
 # add what each facet represents in the plot title
 
@@ -125,3 +126,6 @@ ggplot(diamonds_sample, aes(x = carat, y = price, color = clarity)) +
 # Make sure you've set the working directory!!
 ggsave("my-plot.png", width = 8, height = 6, dpi = 300)
 # The `ggsave()` function will save the current plot to a file, with the specified width, height, and resolution (dpi)
+# specify where will the png be saved
+# The file will be saved in the current working directory, which you can check with `getwd()`
+ggsave("my-plot.png", plot = last_plot(), width = 8, height = 6, dpi = 300)
