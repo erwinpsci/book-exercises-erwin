@@ -1,1 +1,12 @@
-api_key.R
+# Ignore Mac system files
+.DS_Store
+
+# Ignore log files
+*.log
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore environment variable files
+*.env
+.DS_Store
